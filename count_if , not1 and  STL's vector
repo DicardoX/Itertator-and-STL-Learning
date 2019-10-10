@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <functional>
+#include <algorithm>
+
+using namespace std;
+
+const int a[6] = {27, 210, 12, 47, 109, 83};
+
+struct T{
+    int operator()(int x)
+    {
+        int cnt = 0;
+        for(int i=0; i<6; i++)
+        {
+            if(a[i] > 40)
+                cnt++;
+        }
+        return cnt;
+    }
+};
+
+bool judge(int a);
+
+int main()
+{
+    vector<int, allocator<int>> arr(a, a+6);    /** Instantiation and allocation of the iterator **/
+
+    T f;
+
+    /** ***** **/
+    for(int i=0; i<6; i++)             /** To put the element into the back of the vector **/
+        arr.push_back(i);
+
+    cout<<count_if(arr.begin(), arr.end(), judge);   /** Implement iterating operations through iterator, no need to transfer cycle number **/
+    /** ***** **/
+
+
+    /** This is one of the way of iteration looping **/
+    //for(vector<int>:: iterator it = arr.begin(); it != arr.end(); it++)
+    //{
+        //cout<<*it<<' ';
+    //}
+    /** **** **/
+
+    /*cout<<count_if(arr.begin(), arr.end(),
+        not1(bind2nd(less<int>(), 40)));*/
+    return 0;
+}
+
+bool judge(int a)
+{
+    if(a < 40)
+        return true;
+    return false;
+}
