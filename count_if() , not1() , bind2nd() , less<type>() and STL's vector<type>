@@ -42,9 +42,12 @@ int main()
         //cout<<*it<<' ';
     //}
     /** **** **/
-
+    
+    /** This is an exmple for calling count_if() , not1() , bind2nd() , and less<type>() **/
     /*cout<<count_if(arr.begin(), arr.end(),
         not1(bind2nd(less<int>(), 40)));*/
+    /**  **/
+    
     return 0;
 }
 
