@@ -1,59 +1,37 @@
-#include <iostream>
-#include <vector>
-#include <functional>
-#include <algorithm>
+//
+// Created by 薛春宇 on 2019/10/15.
+//
 
-using namespace std;
+#ifndef UNTITLED9_MYDATA_H
+#define UNTITLED9_MYDATA_H
 
-const int a[6] = {27, 210, 12, 47, 109, 83};
+template <typename T>
+struct myData{
+    T val;
+    myData<T>* adrr;
 
-struct T{
-    int operator()(int x)
+    myData<T> operator()(T& x)
     {
-        int cnt = 0;
-        for(int i=0; i<6; i++)
-        {
-            if(a[i] > 40)
-                cnt++;
-        }
-        return cnt;
+        myData<T> tmp;
+        tmp.val = x;
+        return tmp;
     }
 };
 
-bool judge(int a);
+template <typename T>
+struct Cmp_by_val{
+    bool operator()(myData<T> a, myData<T> b)
+    {
+        return a.val < b.val;
+    }
+};
 
-int main()
-{
-    vector<int, allocator<int>> arr(a, a+6);    /** Instantiation and allocation of the iterator **/
+template <typename T>
+struct Cmp_by_addr{
+    bool operator()(myData<T> a, myData<T> b)
+    {
+        return a.addr < b.adrr;
+    }
+};
 
-    T f;
-
-    /** ***** **/
-    for(int i=0; i<6; i++)             /** To put the element into the back of the vector **/
-        arr.push_back(i);
-
-    cout<<count_if(arr.begin(), arr.end(), judge);   /** Implement iterating operations through iterator, no need to transfer cycle number **/
-    /** ***** **/
-
-
-    /** This is one of the way of iteration looping **/
-    //for(vector<int>:: iterator it = arr.begin(); it != arr.end(); it++)
-    //{
-        //cout<<*it<<' ';
-    //}
-    /** **** **/
-    
-    /** This is an exmple for calling count_if() , not1() , bind2nd() , and less<type>() **/
-    /*cout<<count_if(arr.begin(), arr.end(),
-        not1(bind2nd(less<int>(), 40)));*/
-    /**  **/
-    
-    return 0;
-}
-
-bool judge(int a)
-{
-    if(a < 40)
-        return true;
-    return false;
-}
+#endif
