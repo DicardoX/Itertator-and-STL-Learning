@@ -1,37 +1,72 @@
-//
-// Created by 薛春宇 on 2019/10/15.
-//
+#include <iostream>
+#include <vector>
+#include <functional>
+#include <algorithm>
 
-#ifndef UNTITLED9_MYDATA_H
-#define UNTITLED9_MYDATA_H
+using namespace std;
 
-template <typename T>
-struct myData{
-    T val;
-    myData<T>* adrr;
+const int a[6] = {27, 210, 12, 47, 109, 83};
 
-    myData<T> operator()(T& x)
+struct T{
+    bool operator()(const int &x) const
     {
-        myData<T> tmp;
-        tmp.val = x;
-        return tmp;
+        return x<40 ;
+        int cnt = 0;
+        for(int i : a)
+        {
+            if(i > 40)
+                cnt++;
+        }
+        /** The same as:
+         * for(int i=0; i<sizeof(a); i++)
+         * {
+         *      if(a[i] > 40)
+         *          cnt++;
+         * }
+         */
+        return cnt;
     }
+    typedef int argument_type;   /** why need it????????????? **/
 };
 
-template <typename T>
-struct Cmp_by_val{
-    bool operator()(myData<T> a, myData<T> b)
-    {
-        return a.val < b.val;
-    }
+bool judge(int x){
+    return x<40;
+}
+
+/** The corresponding strct for the example **/
+struct IsOdd {
+    bool operator() (const int& x) const {return x%2==1;}
+    typedef int argument_type;
 };
 
-template <typename T>
-struct Cmp_by_addr{
-    bool operator()(myData<T> a, myData<T> b)
-    {
-        return a.addr < b.adrr;
-    }
-};
+int main()
+{
+    vector<int, allocator<int>> arr(a, a+6);    /** Instantiation and allocation of the iterator **/
 
-#endif
+    /** ***** **/
+    //for(int i=0; i<6; i++)             /** To put the element into the back of the vector **/
+        //arr.push_back(i);
+
+    /** A try ---- succeeded!**/
+    //cout<<count_if(arr.begin(), arr.end(), judge);   /** Implement iterating operations through iterator, no need to transfer cycle number **/
+
+    /** A try ---- running available, but not understanding yet... **/
+    cout<<count_if(arr.begin(), arr.end(), not1(T()));
+
+    /** This is one of the way of iteration looping **/
+    //for(vector<int>:: iterator it = arr.begin(); it != arr.end(); it++)
+    //{
+        //cout<<*it<<' ';
+    //}
+
+    /** This is an exmple for calling count_if(), not1(), bind2nd(), and less<type>() **/
+    /*cout<<count_if(arr.begin(), arr.end(),
+        not1(bind2nd(less<int>(), 40)));*/
+
+    /** An example for calling count_if(), not1() (The corresponding strcut is up there) **/
+    /*int values[] = {1,2,3,4,5};
+    int cx = count_if (values, values+5, not1(IsOdd()));
+    cout << "There are " << cx << " elements with even values.\n";*/
+
+    return 0;
+}
